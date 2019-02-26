@@ -1,11 +1,16 @@
 import QtQuick 2.9
 import QtQuick.Window 2.3
-import "../qml_painter"
+
 
 Window {
     visible: true
     width: 640
     height: 480
+
+    LineCanvas {
+        id: lineCanvas
+        anchors.fill: parent
+    }
 
     /*Button {
         anchors.centerIn: parent
@@ -18,10 +23,10 @@ Window {
         borderRadius: 20
     }*/
 
-    Switch {
+    /*Switch {
         anchors.centerIn: parent
         color: "red"
         backgroundColor: "green"
         dimmedColor: "grey"
-    }
+    }*/
 }
