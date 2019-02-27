@@ -13,19 +13,26 @@ Item {
     width: 4 * root.borderRadius
     height: 2 * root.borderRadius
 
+    signal switched()
+
     MouseArea {
         id: mouseArea
 
         property bool isChecked: false
 
         anchors.fill: parent
-        onClicked: root.checked = !root.checked
+        onClicked:{
+            root.checked = !root.checked
+            root.switched()
+        }
     }
 
     Rectangle {
         id: backgroundRectangle
         anchors.fill: parent
         radius: root.borderRadius
+        border.color: "darkgrey"
+        border.width: 1
         color: root.checked ? root.backgroundColor : root.dimmedColor
 
         Behavior on color {
@@ -41,6 +48,8 @@ Item {
         width: 2 * root.borderRadius
         height: 2 * root.borderRadius
         radius: root.borderRadius
+        border.color: "darkslategrey"
+        border.width: 1
 
         Behavior on x {
             PropertyAnimation { duration: root.duration }

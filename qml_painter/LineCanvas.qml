@@ -3,14 +3,17 @@ import QtQuick 2.6
 Item {
     id: root
 
+    property real lineWidth: 2
+    property color lineColor: "transparent"
     property var lines: []
 
     Canvas {
         id: canvas
         anchors.fill: parent
         onPaint: {
-            var ctx = canvas.getContext("2d");
-            ctx.clearRect(0, 0, width, height);
+            var ctx = canvas.getContext("2d")
+            ctx.clearRect(0, 0, width, height)
+            ctx.lineCap = "round"
 
             for (var i = 0; i < lines.length; ++i) {
                 ctx.strokeStyle = lines[i].color
@@ -27,15 +30,15 @@ Item {
     MouseArea {
         anchors.fill: parent
 
-        property real cursorX
-        property real cursorY
         property bool isPressed
 
         onPressed: {
             isPressed = true
-            addLine(Qt.rgba(Math.random(), Math.random(), Math.random(), 1),
-                1 + Math.random() * 4, [{ x: mouseX, y: mouseY }, { x: mouseX, y: mouseY }])
-            canvas.requestPaint()
+
+            if ("transparent" != root.lineColor) {
+                addLine(root.lineColor, root.lineWidth, [{ x: mouseX, y: mouseY }, { x: mouseX, y: mouseY }])
+                canvas.requestPaint()
+            }
         }
         onPositionChanged: {
             if (!isPressed)
@@ -43,6 +46,9 @@ Item {
 
             lines[lines.length - 1].points[1].x = mouseX;
             lines[lines.length - 1].points[1].y = mouseY;
+
+            addLine(root.lineColor, root.lineWidth, [{ x: mouseX, y: mouseY }, { x: mouseX, y: mouseY }])
+
             canvas.requestPaint();
         }
         onReleased: {
@@ -57,8 +63,8 @@ Item {
         lines.push(line)
     }
 
-    function removeColor(color) {
-        console.log("removeLines " + color)
-        lines = lines.filter(function (line) { if (line.color === color) { return false; } return true; })
+    function removeColor(lineColor) {
+        lines = lines.filter(function (line) { return line.color != lineColor })
+        canvas.requestPaint();
     }
 }

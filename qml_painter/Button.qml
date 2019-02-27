@@ -54,6 +54,14 @@ Item {
             }
         },
         State {
+            name: "released"
+            when: mouseArea.released
+            PropertyChanges {
+                target: backgroundRectangle
+                color: root.color
+            }
+        },
+        State {
             name: "dimmed"
             when: !root.enabled
             PropertyChanges {
